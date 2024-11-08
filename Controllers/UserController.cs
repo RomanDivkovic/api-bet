@@ -1,8 +1,13 @@
-using Microsoft.AspNetCore.Mvc;
 using ApiBet.Data;
 using ApiBet.Models;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using System.ComponentModel.DataAnnotations;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Text;
 
 namespace ApiBet.Controllers
 {
@@ -11,22 +16,22 @@ namespace ApiBet.Controllers
   public class UsersController : ControllerBase
   {
     private readonly BettingContext _context;
+    private readonly IConfiguration _configuration;
 
-    public UsersController(BettingContext context)
+    public UsersController(BettingContext context, IConfiguration configuration)
     {
       _context = context;
+      _configuration = configuration;
     }
 
-    // DTO för att returnera användare utan att exponera lösenordshash
     public class UserDto
     {
       public int Id { get; set; }
       public string Username { get; set; }
       public string Email { get; set; }
-      public string? PhoneNumber { get; set; } // Telefonnummer är valfritt
+      public string? PhoneNumber { get; set; }
     }
 
-    // Register Request
     public class RegisterRequest
     {
       [Required]
@@ -42,7 +47,7 @@ namespace ApiBet.Controllers
       public string Email { get; set; }
 
       [Phone]
-      public string? PhoneNumber { get; set; } // Telefon är valfritt
+      public string? PhoneNumber { get; set; }
     }
 
     [HttpPost("register")]
@@ -82,9 +87,33 @@ namespace ApiBet.Controllers
       if (foundUser == null || !BCrypt.Net.BCrypt.Verify(request.Password, foundUser.PasswordHash))
         return Unauthorized("Fel användarnamn eller lösenord.");
 
-      return Ok(new UserDto { Id = foundUser.Id, Username = foundUser.Username, Email = foundUser.Email, PhoneNumber = foundUser.PhoneNumber });
+      var token = GenerateJwtToken(foundUser);
+      return Ok(new { Token = token, User = new UserDto { Id = foundUser.Id, Username = foundUser.Username, Email = foundUser.Email, PhoneNumber = foundUser.PhoneNumber } });
     }
 
+    private string GenerateJwtToken(User user)
+    {
+      var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]));
+      var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
+
+      var claims = new[]
+      {
+        new Claim(JwtRegisteredClaimNames.Sub, user.Username),
+        new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+        new Claim(ClaimTypes.NameIdentifier, user.Id.ToString())
+      };
+
+      var token = new JwtSecurityToken(
+          issuer: _configuration["Jwt:Issuer"],
+          audience: _configuration["Jwt:Audience"],
+          claims: claims,
+          expires: DateTime.Now.AddMinutes(30),
+          signingCredentials: credentials);
+
+      return new JwtSecurityTokenHandler().WriteToken(token);
+    }
+
+    [Authorize]
     [HttpGet]
     public async Task<IActionResult> GetAllUsers()
     {
@@ -94,6 +123,7 @@ namespace ApiBet.Controllers
       return Ok(users);
     }
 
+    [Authorize]
     [HttpGet("{id}")]
     public async Task<IActionResult> GetUserById(int id)
     {
@@ -123,9 +153,10 @@ namespace ApiBet.Controllers
       public string? Email { get; set; }
 
       [Phone]
-      public string? PhoneNumber { get; set; } // Telefon är valfritt
+      public string? PhoneNumber { get; set; }
     }
 
+    [Authorize]
     [HttpPut("{id}")]
     public async Task<IActionResult> UpdateUser(int id, [FromBody] UpdateUserRequest request)
     {
@@ -147,11 +178,6 @@ namespace ApiBet.Controllers
         user.Email = request.Email;
       }
 
-      if (!string.IsNullOrEmpty(request.Password))
-      {
-        user.PasswordHash = BCrypt.Net.BCrypt.HashPassword(request.Password);
-      }
-
       if (!string.IsNullOrEmpty(request.PhoneNumber))
       {
         user.PhoneNumber = request.PhoneNumber;
@@ -163,6 +189,7 @@ namespace ApiBet.Controllers
       return Ok(new UserDto { Id = user.Id, Username = user.Username, Email = user.Email, PhoneNumber = user.PhoneNumber });
     }
 
+    [Authorize]
     [HttpDelete("{id}")]
     public async Task<IActionResult> DeleteUser(int id)
     {

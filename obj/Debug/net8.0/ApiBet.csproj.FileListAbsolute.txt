@@ -137,3 +137,4 @@
 /Users/romandivkovic/Documents/Repos/api-bet/ApiBet/obj/Debug/net8.0/ApiBet.genruntimeconfig.cache
 /Users/romandivkovic/Documents/Repos/api-bet/ApiBet/obj/Debug/net8.0/ref/ApiBet.dll
 /Users/romandivkovic/Documents/Repos/api-bet/ApiBet/obj/Debug/net8.0/ApiBet.sourcelink.json
+/Users/romandivkovic/Documents/Repos/api-bet/ApiBet/bin/Debug/net8.0/Microsoft.AspNetCore.Authentication.JwtBearer.dll
