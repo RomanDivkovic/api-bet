@@ -156,6 +156,30 @@ namespace ApiBet.Controllers
       public string? PhoneNumber { get; set; }
     }
 
+    [HttpPost("logout")]
+    [Authorize]
+    public async Task<IActionResult> Logout()
+    {
+      var token = HttpContext.Request.Headers["Authorization"].FirstOrDefault()?.Split(" ").Last();
+
+      if (string.IsNullOrEmpty(token))
+      {
+        return BadRequest("Ingen token skickades.");
+      }
+
+      // Svartlista token
+      var blacklistedToken = new BlacklistedToken
+      {
+        Token = token,
+        ExpiryDate = DateTime.UtcNow.AddMinutes(120) // Ange tokenens giltighetstid
+      };
+
+      _context.BlacklistedTokens.Add(blacklistedToken);
+      await _context.SaveChangesAsync();
+
+      return Ok("Token har blivit svartlistad.");
+    }
+
     [Authorize]
     [HttpPut("{id}")]
     public async Task<IActionResult> UpdateUser(int id, [FromBody] UpdateUserRequest request)
@@ -205,4 +229,6 @@ namespace ApiBet.Controllers
       return Ok($"Användare med ID {id} raderades.");
     }
   }
+
+
 }
