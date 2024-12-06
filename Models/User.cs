@@ -1,21 +1,16 @@
-// Models/User.cs
-using System.ComponentModel.DataAnnotations;
-
 namespace ApiBet.Models
 {
   public class User
   {
     public int Id { get; set; }
-
-    public string? PhoneNumber { get; set; } = string.Empty;
-
-    [Required]
     public string Username { get; set; } = string.Empty;
-
-    [Required]
     public string PasswordHash { get; set; } = string.Empty;
+    public string Email { get; set; } = string.Empty;
+    public string? PhoneNumber { get; set; } // Valfritt fält
 
-    public List<UserGroup>? UserGroups { get; set; } // Relation till UserGroup
-    public string? Email { get; internal set; }
+    // Relationer
+    public ICollection<UserGroup> UserGroups { get; set; } = new List<UserGroup>(); // Relation till grupper
+    public ICollection<GroupInvitation> Invitations { get; set; } = new List<GroupInvitation>(); // Relation till inbjudningar
+    public List<Bet> Bets { get; set; } = new List<Bet>(); // Lägg till denna för relationen med `Bets`
   }
 }
