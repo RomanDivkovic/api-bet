@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("ApiBet")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+6f948f74ab78fc5a3e3abab1bfac2db5c0bf8ff5")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+71e6ac54d14cd83895081235f3de07068eb30274")]
 [assembly: System.Reflection.AssemblyProductAttribute("ApiBet")]
 [assembly: System.Reflection.AssemblyTitleAttribute("ApiBet")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

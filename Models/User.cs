@@ -1,16 +1,20 @@
+using Microsoft.EntityFrameworkCore;
+
 namespace ApiBet.Models
 {
+  [Index(nameof(Email), IsUnique = true)]
+  [Index(nameof(PhoneNumber), IsUnique = true)]
   public class User
   {
     public int Id { get; set; }
     public string Username { get; set; } = string.Empty;
     public string PasswordHash { get; set; } = string.Empty;
     public string Email { get; set; } = string.Empty;
-    public string? PhoneNumber { get; set; } // Valfritt fält
+    public string? PhoneNumber { get; set; }
 
-    // Relationer
-    public ICollection<UserGroup> UserGroups { get; set; } = new List<UserGroup>(); // Relation till grupper
-    public ICollection<GroupInvitation> Invitations { get; set; } = new List<GroupInvitation>(); // Relation till inbjudningar
-    public List<Bet> Bets { get; set; } = new List<Bet>(); // Lägg till denna för relationen med `Bets`
+    public ICollection<UserGroup> UserGroups { get; set; } = new List<UserGroup>();
+    public ICollection<GroupInvitation> Invitations { get; set; } = new List<GroupInvitation>();
+    public List<Bet> Bets { get; set; } = new List<Bet>();
   }
+
 }

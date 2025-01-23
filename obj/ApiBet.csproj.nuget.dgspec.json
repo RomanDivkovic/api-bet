@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "/Users/romandivkovic/Documents/Repos/api-bet/ApiBet/ApiBet.csproj": {}
+    "/Users/romandivkovic/Documents/ApiBet/ApiBet.csproj": {}
   },
   "projects": {
-    "/Users/romandivkovic/Documents/Repos/api-bet/ApiBet/ApiBet.csproj": {
+    "/Users/romandivkovic/Documents/ApiBet/ApiBet.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/Users/romandivkovic/Documents/Repos/api-bet/ApiBet/ApiBet.csproj",
+        "projectUniqueName": "/Users/romandivkovic/Documents/ApiBet/ApiBet.csproj",
         "projectName": "ApiBet",
-        "projectPath": "/Users/romandivkovic/Documents/Repos/api-bet/ApiBet/ApiBet.csproj",
+        "projectPath": "/Users/romandivkovic/Documents/ApiBet/ApiBet.csproj",
         "packagesPath": "/Users/romandivkovic/.nuget/packages/",
-        "outputPath": "/Users/romandivkovic/Documents/Repos/api-bet/ApiBet/obj/",
+        "outputPath": "/Users/romandivkovic/Documents/ApiBet/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "/Users/romandivkovic/.nuget/NuGet/NuGet.Config"
@@ -49,43 +49,27 @@
             },
             "Microsoft.AspNetCore.Authentication.JwtBearer": {
               "target": "Package",
-              "version": "[8.0.10, )"
-            },
-            "Microsoft.AspNetCore.OpenApi": {
-              "target": "Package",
-              "version": "[8.0.7, )"
+              "version": "[8.0.0, )"
             },
             "Microsoft.EntityFrameworkCore": {
               "target": "Package",
-              "version": "[9.0.0, )"
+              "version": "[9.0.1, )"
             },
             "Microsoft.EntityFrameworkCore.SqlServer": {
               "target": "Package",
-              "version": "[9.0.0, )"
+              "version": "[8.0.0, )"
             },
-            "Microsoft.EntityFrameworkCore.Tools": {
-              "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
-              "suppressParent": "All",
+            "Microsoft.Extensions.Logging": {
               "target": "Package",
-              "version": "[9.0.0, )"
+              "version": "[9.0.1, )"
             },
-            "Moq": {
+            "Npgsql.EntityFrameworkCore.PostgreSQL": {
               "target": "Package",
-              "version": "[4.20.72, )"
+              "version": "[9.0.3, )"
             },
             "Swashbuckle.AspNetCore": {
               "target": "Package",
-              "version": "[6.7.3, )"
-            },
-            "xunit": {
-              "target": "Package",
-              "version": "[2.9.2, )"
-            },
-            "xunit.runner.visualstudio": {
-              "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
-              "suppressParent": "All",
-              "target": "Package",
-              "version": "[2.8.2, )"
+              "version": "[7.2.0, )"
             }
           },
           "imports": [
